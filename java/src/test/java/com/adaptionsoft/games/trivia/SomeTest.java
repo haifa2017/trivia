@@ -3,6 +3,7 @@ package com.adaptionsoft.games.trivia;
 import com.adaptionsoft.games.trivia.runner.AutomatePlayer;
 import com.adaptionsoft.games.trivia.runner.GameRunner;
 import com.adaptionsoft.games.trivia.runner.IAutomatePlayer;
+import com.adaptionsoft.games.trivia.uglytrivia.IPrinter;
 import org.assertj.core.api.Assertions;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -31,22 +32,16 @@ public class SomeTest {
 
     @Test
     public void first_sample_golden_master() throws IOException, URISyntaxException {
-        PrintStream originalOut = System.out;
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         List<String> expectedString = Files.readAllLines(Paths.get("src/test/resources/goldenMaster.txt"));
 
         Integer[] rolls = {2, 3, 3, 4, 5, 5, 2, 2, 5, 4, 2, 4, 1, 3, 5, 3};
         Boolean[] answers = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
         FakePlayer fakePlayer = new FakePlayer(rolls, answers);
 
-        System.setOut(new PrintStream(byteArrayOutputStream));
-        GameRunner.playGame(fakePlayer);
-        System.setOut(originalOut);
+        FakePrinter fakePrinter = new FakePrinter();
+        GameRunner.playGame(fakePlayer, fakePrinter);
 
-        String output = new String(byteArrayOutputStream.toByteArray());
-
-        List<String> outputStrings = Arrays.asList(output.split("\r\n"));
-        Assertions.assertThat(outputStrings).containsExactlyElementsOf(expectedString);
+        Assertions.assertThat(fakePrinter.output).containsExactlyElementsOf(expectedString);
     }
 
     @Test
@@ -100,6 +95,15 @@ public class SomeTest {
 
     }
 
+    public class FakePrinter implements IPrinter {
 
+        List<String> output = new ArrayList<>();
+
+        @Override
+        public void print(String x) {
+            output.add(x);
+
+        }
+    }
 }
 

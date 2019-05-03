@@ -1,6 +1,8 @@
 package com.adaptionsoft.games.trivia.runner;
 
+import com.adaptionsoft.games.trivia.uglytrivia.ConsolePrinter;
 import com.adaptionsoft.games.trivia.uglytrivia.Game;
+import com.adaptionsoft.games.trivia.uglytrivia.IPrinter;
 
 public class GameRunner implements IRandom {
 
@@ -13,7 +15,12 @@ public class GameRunner implements IRandom {
     }
 
     public static void playGame(IAutomatePlayer automatePlayer) {
-        Game aGame = new Game();
+
+        playGame(automatePlayer, new ConsolePrinter());
+    }
+
+    public static void playGame(IAutomatePlayer automatePlayer, IPrinter printer) {
+        Game aGame = new Game(printer);
 
         aGame.add("Chet");
         aGame.add("Pat");
