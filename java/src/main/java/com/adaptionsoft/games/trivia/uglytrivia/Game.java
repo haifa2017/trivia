@@ -34,9 +34,11 @@ public class Game {
     }
 
     public boolean add(String playerName) {
+        Player player = new Player(playerName);
+        board.addPlayer(player);
+
         players.add(playerName);
         board.places[howManyPlayers()] = 0;
-        board.purses[howManyPlayers()] = 0;
         board.inPenaltyBox[howManyPlayers()] = false;
 
         System.out.println(playerName + " was added");
@@ -120,10 +122,10 @@ public class Game {
         if (board.inPenaltyBox[currentPlayer]) {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
-                board.purses[currentPlayer]++;
+                board.incrementPlayerCoins(currentPlayer);
                 System.out.println(players.get(currentPlayer)
                         + " now has "
-                        + board.purses[currentPlayer]
+                        + board.getCoins(currentPlayer)
                         + " Gold Coins.");
 
                 boolean winner = didPlayerWin();
@@ -141,10 +143,10 @@ public class Game {
         } else {
 
             System.out.println("Answer was corrent!!!!");
-            board.purses[currentPlayer]++;
+            board.incrementPlayerCoins(currentPlayer);
             System.out.println(players.get(currentPlayer)
                     + " now has "
-                    + board.purses[currentPlayer]
+                    + board.getCoins(currentPlayer)
                     + " Gold Coins.");
 
             boolean winner = didPlayerWin();
@@ -167,6 +169,6 @@ public class Game {
 
 
     private boolean didPlayerWin() {
-        return !(board.purses[currentPlayer] == 6);
+        return !(board.getCoins(currentPlayer) == 6);
     }
 }
