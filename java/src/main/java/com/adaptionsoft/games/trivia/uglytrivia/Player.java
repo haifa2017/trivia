@@ -17,4 +17,12 @@ public class Player {
     public int getCoins() {
         return goldCoinsNumber;
     }
+
+    public void putInPenaltyBox() {
+        isInPenaltyBox = true;
+    }
+
+    public boolean isInPenaltyBox() {
+        return isInPenaltyBox;
+    }
 }

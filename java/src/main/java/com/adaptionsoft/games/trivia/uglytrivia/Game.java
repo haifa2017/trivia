@@ -39,7 +39,6 @@ public class Game {
 
         players.add(playerName);
         board.places[howManyPlayers()] = 0;
-        board.inPenaltyBox[howManyPlayers()] = false;
 
         System.out.println(playerName + " was added");
         System.out.println("They are player number " + players.size());
@@ -54,7 +53,8 @@ public class Game {
         System.out.println(players.get(currentPlayer) + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        if (board.inPenaltyBox[currentPlayer]) {
+
+        if (board.isInPenaltyBox(currentPlayer)) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
 
@@ -119,7 +119,7 @@ public class Game {
     }
 
     public boolean wasCorrectlyAnswered() {
-        if (board.inPenaltyBox[currentPlayer]) {
+        if (board.isInPenaltyBox(currentPlayer)) {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
                 board.incrementPlayerCoins(currentPlayer);
@@ -160,7 +160,7 @@ public class Game {
     public boolean wrongAnswer() {
         System.out.println("Question was incorrectly answered");
         System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
-        board.inPenaltyBox[currentPlayer] = true;
+        board.putCurrentPlayerInPenaltyBox(currentPlayer);
 
         currentPlayer++;
         if (currentPlayer == players.size()) currentPlayer = 0;

@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Board {
     int[] places;
-    boolean[] inPenaltyBox;
     List<Player> players = new ArrayList<>();
     LinkedList<String> popQuestions = new LinkedList<String>();
     LinkedList<String> scienceQuestions = new LinkedList<String>();
@@ -16,7 +15,6 @@ public class Board {
     public Board() {
         this.places = new int[Game.MAX_PLAYER_NUMBER];
 
-        this.inPenaltyBox = new boolean[Game.MAX_PLAYER_NUMBER];
     }
 
     public void addPlayer(Player player) {
@@ -29,5 +27,13 @@ public class Board {
 
     public int getCoins(int currentPlayer) {
         return players.get(currentPlayer).getCoins();
+    }
+
+    public void putCurrentPlayerInPenaltyBox(int currentPlayer) {
+        players.get(currentPlayer).putInPenaltyBox();
+    }
+
+    public boolean isInPenaltyBox(int currentPlayer) {
+        return players.get(currentPlayer).isInPenaltyBox();
     }
 }
