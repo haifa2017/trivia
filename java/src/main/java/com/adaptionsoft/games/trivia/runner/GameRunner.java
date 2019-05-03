@@ -1,6 +1,6 @@
 package com.adaptionsoft.games.trivia.runner;
 
-import com.adaptionsoft.games.uglytrivia.Game;
+import com.adaptionsoft.games.trivia.uglytrivia.Game;
 
 public class GameRunner implements IRandom {
 

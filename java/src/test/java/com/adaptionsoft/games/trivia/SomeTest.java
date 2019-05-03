@@ -1,7 +1,5 @@
 package com.adaptionsoft.games.trivia;
 
-import static org.junit.Assert.*;
-
 import com.adaptionsoft.games.trivia.runner.AutomatePlayer;
 import com.adaptionsoft.games.trivia.runner.GameRunner;
 import com.adaptionsoft.games.trivia.runner.IAutomatePlayer;
@@ -23,15 +21,12 @@ public class SomeTest {
 
     @Test
     @Ignore
-    public void golden_master() {
-
+    public void generate_golden_master() {
         AutomatePlayer automatePlayer = new AutomatePlayer();
         PlayerWrapper playerWrapper = new PlayerWrapper(automatePlayer);
 
         GameRunner.playGame(playerWrapper);
         playerWrapper.print();
-
-
     }
 
     @Test
@@ -40,9 +35,9 @@ public class SomeTest {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         List<String> expectedString = Files.readAllLines(Paths.get("src/test/resources/goldenMaster.txt"));
 
-        Integer [] rolls = {2, 3, 3, 4, 5, 5, 2, 2, 5, 4, 2, 4, 1, 3, 5, 3};
+        Integer[] rolls = {2, 3, 3, 4, 5, 5, 2, 2, 5, 4, 2, 4, 1, 3, 5, 3};
         Boolean[] answers = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
-        FakePlayer fakePlayer = new FakePlayer(rolls,answers);
+        FakePlayer fakePlayer = new FakePlayer(rolls, answers);
 
         System.setOut(new PrintStream(byteArrayOutputStream));
         GameRunner.playGame(fakePlayer);
@@ -60,9 +55,9 @@ public class SomeTest {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         List<String> expectedString = Files.readAllLines(Paths.get("src/test/resources/goldenMasterv2.txt"));
 
-        Integer [] rolls =  {5, 2, 2, 1, 3, 4, 2, 1, 1, 4, 3, 5, 2, 5, 3, 4, 1, 1, 1, 2, 1, 3, 5};
+        Integer[] rolls = {5, 2, 2, 1, 3, 4, 2, 1, 1, 4, 3, 5, 2, 5, 3, 4, 1, 1, 1, 2, 1, 3, 5};
         Boolean[] answers = {false, false, true, true, false, false, false, false, true, false, false, false, true, true, false, false, false, false, false, false, false, false, false};
-        FakePlayer fakePlayer = new FakePlayer(rolls,answers);
+        FakePlayer fakePlayer = new FakePlayer(rolls, answers);
 
         System.setOut(new PrintStream(byteArrayOutputStream));
         GameRunner.playGame(fakePlayer);
@@ -74,7 +69,7 @@ public class SomeTest {
         Assertions.assertThat(outputStrings).containsExactlyElementsOf(expectedString);
     }
 
-    public class PlayerWrapper implements IAutomatePlayer{
+    public class PlayerWrapper implements IAutomatePlayer {
         private final IAutomatePlayer automatePlayer;
         private final List<Integer> rolls = new ArrayList<>();
         private final List<Boolean> answers = new ArrayList<>();
@@ -98,7 +93,7 @@ public class SomeTest {
             return roll;
         }
 
-        public void print(){
+        public void print() {
             System.out.println("rolls = " + rolls);
             System.out.println("answers = " + answers);
         }
