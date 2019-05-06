@@ -25,4 +25,8 @@ public class Player {
     public boolean isInPenaltyBox() {
         return isInPenaltyBox;
     }
+
+    public String getName() {
+        return name;
+    }
 }

@@ -9,6 +9,14 @@ public class Players {
     public Players() {
     }
 
+    public int count() {
+        return players.size();
+    }
+
+    public String getPlayerName(int index) {
+        return players.get(index).getName();
+    }
+
     public void addPlayer(Player player) {
         players.add(player);
     }
