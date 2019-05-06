@@ -12,7 +12,6 @@ public class Game {
     private final Board board = new Board();
     private final IPrinter printer;
     private int currentPlayer = 0;
-    private boolean isGettingOutOfPenaltyBox;
 
     public Game(IPrinter printer) {
         this.printer = printer;
@@ -59,13 +58,11 @@ public class Game {
 
         if (players.isInPenaltyBox(currentPlayer)) {
             if (roll % 2 != 0) {
-                isGettingOutOfPenaltyBox = true;
                 players.getPlayerOutOfPenaltyBox(currentPlayer, roll);
                 printer.print(players.getPlayerName(currentPlayer) + " is getting out of the penalty box");
                 movePlayer(roll);
             } else {
                 printer.print(players.getPlayerName(currentPlayer) + " is not getting out of the penalty box");
-                isGettingOutOfPenaltyBox = false;
             }
 
         } else {
@@ -121,7 +118,7 @@ public class Game {
     }
 
     public boolean wasCorrectlyAnswered() {
-        if (players.isInPenaltyBox(currentPlayer) && !isGettingOutOfPenaltyBox) {
+        if (players.isInPenaltyBox(currentPlayer)) {
             currentPlayer++;
             if (currentPlayer == howManyPlayers()) {
                 currentPlayer = 0;
