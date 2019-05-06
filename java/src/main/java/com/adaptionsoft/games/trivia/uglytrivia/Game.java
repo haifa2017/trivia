@@ -7,7 +7,6 @@ public class Game {
     public static final String ROCK = "Rock";
     public static final int CATEGORY_NUMBER = 4;
     final Players players = new Players();
-    private static final int MIN_PLAYER_NUMBER = 2;
     private static final int NUMBER_MAX_QUESTION = 50;
     private final Board board = new Board();
     private final IPrinter printer;
@@ -33,7 +32,7 @@ public class Game {
     }
 
     public boolean isPlayable() {
-        return (howManyPlayers() >= MIN_PLAYER_NUMBER);
+        return players.isPlayersNumberValid();
     }
 
     public boolean add(String playerName) {

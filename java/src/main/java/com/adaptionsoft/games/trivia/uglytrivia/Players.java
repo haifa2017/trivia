@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Players {
     static final int MAX_PLAYER_NUMBER = 6;
+    static final int MIN_PLAYER_NUMBER = 2;
     List<Player> players = new ArrayList<Player>();
 
     public Players() {
@@ -36,5 +37,9 @@ public class Players {
 
     public boolean isInPenaltyBox(int currentPlayer) {
         return players.get(currentPlayer).isInPenaltyBox();
+    }
+
+    boolean isPlayersNumberValid() {
+        return count() >= MIN_PLAYER_NUMBER;
     }
 }
