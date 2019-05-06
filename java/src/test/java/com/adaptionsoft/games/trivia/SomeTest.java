@@ -62,7 +62,7 @@ public class SomeTest {
         String output = new String(byteArrayOutputStream.toByteArray());
 
         List<String> outputStrings = Arrays.asList(output.split("\r\n"));
-        Assertions.assertThat(outputStrings).containsExactlyElementsOf(expectedString);
+        Assertions.assertThat(outputStrings).isEqualTo(expectedString);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class SomeTest {
         FakePrinter fakePrinter = new FakePrinter();
         GameRunner.playGame(fakePlayer, fakePrinter);
 
-        Assertions.assertThat(fakePrinter.output).containsExactlyElementsOf(expectedString);
+        Assertions.assertThat(fakePrinter.output).isEqualTo(expectedString);
     }
 
     @Test
@@ -92,6 +92,22 @@ public class SomeTest {
         game.wrongAnswer();
         String outputResult = fakePrinter.output.get(fakePrinter.output.size() - 1);
         Assertions.assertThat(outputResult).isEqualTo("Che is not getting out of the penalty box");
+    }
+
+    @Test
+    public void player_should_answer_when_he_get_out_of_penalty_box() {
+        FakePrinter fakePrinter = new FakePrinter();
+        Game game = new Game(fakePrinter);
+        game.add("Che");
+
+        game.roll(1);
+        game.wrongAnswer();
+        game.roll(1);
+        game.wrongAnswer();
+
+        String outputResult = fakePrinter.output.get(fakePrinter.output.size() - 1);
+        Assertions.assertThat(outputResult).isEqualTo("Che was sent to the penalty box");
+
     }
 
     public class PlayerWrapper implements IAutomatePlayer {

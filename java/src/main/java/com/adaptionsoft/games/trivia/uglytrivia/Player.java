@@ -33,7 +33,7 @@ public class Player {
     }
 
     public void tryGettingOutOfPrison(int roll) {
-        if (roll % 2 != 0) {
+        if (roll % 2 == 0) {
             return;
         }
         this.isInPenaltyBox = false;

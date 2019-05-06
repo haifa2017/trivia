@@ -7,21 +7,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PlayerTest {
 
     @Test
-    public void player_in_prison_should_get_out_of_prison_if_roll_even() {
+    public void player_in_prison_should_get_out_of_prison_if_roll_odd() {
         Player player = new Player("Charles");
 
         player.putInPenaltyBox();
-        player.tryGettingOutOfPrison(2);
+        player.tryGettingOutOfPrison(1);
 
         assertThat(player.isInPenaltyBox()).isFalse();
     }
 
     @Test
-    public void player_in_prison_should_not_get_out_of_prison_if_roll_odd() {
+    public void player_in_prison_should_not_get_out_of_prison_if_roll_even() {
         Player player = new Player("Jean");
 
         player.putInPenaltyBox();
-        player.tryGettingOutOfPrison(3);
+        player.tryGettingOutOfPrison(2);
 
         assertThat(player.isInPenaltyBox()).isTrue();
     }
