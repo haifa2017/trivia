@@ -66,6 +66,9 @@ Answer was correct!!!!
 Sue now has 3 Gold Coins.
 Chet is the current player
 They have rolled a 2
+Chet's new location is 8
+The category is Pop
+Pop Question 1
 Question was incorrectly answered
 Chet was sent to the penalty box
 Pat is the current player

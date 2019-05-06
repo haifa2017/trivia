@@ -70,7 +70,7 @@ public class SomeTest {
         List<String> expectedString = Files.readAllLines(Paths.get("src/test/resources/goldenMasterWithPlayerNotGettingOutOfPenaltyBox.txt"));
 
         Integer[] rolls = {5, 1, 1, 4, 2, 2, 1, 4, 1, 2, 4, 1, 4, 4, 1, 2, 4, 1};
-        Boolean[] answers = {true, false, false, false, false, false, false, false, true, true, false, false, false, false, false, false, false};
+        Boolean[] answers = {true, false, false, true, false, false, false, false, false, true, true, false, false, false, false, false, false, false};
         FakePlayer fakePlayer = new FakePlayer(rolls, answers);
 
         FakePrinter fakePrinter = new FakePrinter();
