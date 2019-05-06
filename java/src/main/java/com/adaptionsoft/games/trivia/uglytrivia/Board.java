@@ -10,7 +10,7 @@ public class Board {
     LinkedList<String> rockQuestions = new LinkedList<String>();
 
     public Board() {
-        this.places = new int[Game.MAX_PLAYER_NUMBER];
+        this.places = new int[Players.MAX_PLAYER_NUMBER];
 
     }
 }

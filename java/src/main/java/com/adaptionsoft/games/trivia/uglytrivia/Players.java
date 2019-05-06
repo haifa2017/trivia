@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Players {
+    static final int MAX_PLAYER_NUMBER = 6;
     List<Player> players = new ArrayList<Player>();
 
     public Players() {

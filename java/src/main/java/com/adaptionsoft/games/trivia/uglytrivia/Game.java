@@ -6,7 +6,6 @@ public class Game {
     public static final String SPORTS = "Sports";
     public static final String ROCK = "Rock";
     public static final int CATEGORY_NUMBER = 4;
-    static final int MAX_PLAYER_NUMBER = 6;
     final Players players = new Players();
     private static final int MIN_PLAYER_NUMBER = 2;
     private static final int NUMBER_MAX_QUESTION = 50;

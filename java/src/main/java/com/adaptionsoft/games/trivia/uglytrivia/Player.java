@@ -4,7 +4,7 @@ public class Player {
 
     private int goldCoinsNumber = 0;
     private boolean isInPenaltyBox = false;
-    private String name;
+    private final String name;
 
     public Player(String name) {
         this.name = name;
