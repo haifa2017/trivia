@@ -6,12 +6,12 @@ public class Game {
     public static final String SPORTS = "Sports";
     public static final String ROCK = "Rock";
     public static final int CATEGORY_NUMBER = 4;
-    public static final int I_THINK_ITS_MAX_NUMBER_OF_CASES = 12;
+    public static final int NUMBER_OF_PLACES = 12;
     final Players players = new Players();
     private static final int NUMBER_MAX_QUESTION = 50;
-    private final Board board = new Board();
+    public final Board board = new Board();
     private final IPrinter printer;
-    private int currentPlayer = 0;
+    public int currentPlayer = 0;
 
     public Game(IPrinter printer) {
         this.printer = printer;
@@ -39,9 +39,6 @@ public class Game {
     public boolean add(String playerName) {
         Player player = new Player(playerName);
         players.addPlayer(player);
-
-        //initialiser l'emplacement du joueur en 0 au moment d'ajout
-        board.places[howManyPlayers()] = 0;
 
         printer.print(playerName + " was added");
         printer.print("They are player number " + howManyPlayers());
@@ -72,14 +69,11 @@ public class Game {
     }
 
     private void movePlayer(int roll) {
-        board.places[currentPlayer] = board.places[currentPlayer] + roll;
-        if (board.places[currentPlayer] > 11) {
-            board.places[currentPlayer] = board.places[currentPlayer] - I_THINK_ITS_MAX_NUMBER_OF_CASES;
-        }
+        int newPosition = players.movePlayer(currentPlayer, roll);
 
         printer.print(players.getPlayerName(currentPlayer)
                 + "'s new location is "
-                + board.places[currentPlayer]);
+                + newPosition);
         printer.print("The category is " + currentCategory());
         askQuestion();
     }
@@ -106,15 +100,19 @@ public class Game {
 
     private boolean isSports() {
 
-        return board.places[currentPlayer] % CATEGORY_NUMBER == 2;
+        return getPlayerPosition(currentPlayer) % CATEGORY_NUMBER == 2;
+    }
+
+    public int getPlayerPosition(int currentPlayer) {
+        return players.getPlayerPosition(currentPlayer);
     }
 
     private boolean isScience() {
-        return board.places[currentPlayer] % CATEGORY_NUMBER == 1;
+        return getPlayerPosition(currentPlayer) % CATEGORY_NUMBER == 1;
     }
 
     private boolean isPop() {
-        return board.places[currentPlayer] % CATEGORY_NUMBER == 0;
+        return getPlayerPosition(currentPlayer) % CATEGORY_NUMBER == 0;
     }
 
     public boolean wasCorrectlyAnswered() {

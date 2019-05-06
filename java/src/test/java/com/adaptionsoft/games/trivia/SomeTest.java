@@ -42,7 +42,7 @@ public class SomeTest {
         FakePrinter fakePrinter = new FakePrinter();
         GameRunner.playGame(fakePlayer, fakePrinter);
 
-        Assertions.assertThat(fakePrinter.output).containsExactlyElementsOf(expectedString);
+        Assertions.assertThat(fakePrinter.output).isEqualTo(expectedString);
     }
 
     @Test

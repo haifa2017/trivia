@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.trivia.uglytrivia;
 
+import static com.adaptionsoft.games.trivia.uglytrivia.Game.NUMBER_OF_PLACES;
+
 public class Player {
 
     private int goldCoinsNumber = 0;
@@ -37,5 +39,19 @@ public class Player {
             return;
         }
         this.isInPenaltyBox = false;
+    }
+
+    public int move(int roll) {
+        this.position = this.position + roll;
+
+        if (this.position > 11) {
+            this.position = this.position - NUMBER_OF_PLACES;
+        }
+
+        return this.position;
+    }
+
+    public int getPosition() {
+        return this.position;
     }
 }

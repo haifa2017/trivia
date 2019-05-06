@@ -46,4 +46,12 @@ public class Players {
     public void getPlayerOutOfPenaltyBox(int playerIndex, int roll) {
         players.get(playerIndex).tryGettingOutOfPrison(roll);
     }
+
+    public int movePlayer(int currentPlayer, int roll) {
+        return players.get(currentPlayer).move(roll);
+    }
+
+    public int getPlayerPosition(int currentPlayer) {
+        return players.get(currentPlayer).getPosition();
+    }
 }
