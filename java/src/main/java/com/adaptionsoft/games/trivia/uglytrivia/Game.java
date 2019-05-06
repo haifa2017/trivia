@@ -9,11 +9,12 @@ public class Game {
     public static final String ROCK = "Rock";
     public static final int CATEGORY_NUMBER = 4;
     static final int MAX_PLAYER_NUMBER = 6;
+    final Players players = new Players();
     private static final int MIN_PLAYER_NUMBER = 2;
     private static final int NUMBER_MAX_QUESTION = 50;
     private final Board board = new Board();
     private final IPrinter printer;
-    private ArrayList<String> players = new ArrayList<>();
+    private ArrayList<String> playersName = new ArrayList<>();
     private int currentPlayer = 0;
     private boolean isGettingOutOfPenaltyBox;
 
@@ -41,40 +42,40 @@ public class Game {
 
     public boolean add(String playerName) {
         Player player = new Player(playerName);
-        board.addPlayer(player);
+        players.addPlayer(player);
 
-        players.add(playerName);
+        playersName.add(playerName);
         board.places[howManyPlayers()] = 0;
 
         printer.print(playerName + " was added");
-        printer.print("They are player number " + players.size());
+        printer.print("They are player number " + playersName.size());
         return true;
     }
 
     private int howManyPlayers() {
-        return players.size();
+        return playersName.size();
     }
 
     public void roll(int roll) {
-        printer.print(players.get(currentPlayer) + " is the current player");
+        printer.print(playersName.get(currentPlayer) + " is the current player");
         printer.print("They have rolled a " + roll);
 
 
-        if (board.isInPenaltyBox(currentPlayer)) {
+        if (players.isInPenaltyBox(currentPlayer)) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
 
-                printer.print(players.get(currentPlayer) + " is getting out of the penalty box");
+                printer.print(playersName.get(currentPlayer) + " is getting out of the penalty box");
                 board.places[currentPlayer] = board.places[currentPlayer] + roll;
                 if (board.places[currentPlayer] > 11) board.places[currentPlayer] = board.places[currentPlayer] - 12;
 
-                printer.print(players.get(currentPlayer)
+                printer.print(playersName.get(currentPlayer)
                         + "'s new location is "
                         + board.places[currentPlayer]);
                 printer.print("The category is " + currentCategory());
                 askQuestion();
             } else {
-                printer.print(players.get(currentPlayer) + " is not getting out of the penalty box");
+                printer.print(playersName.get(currentPlayer) + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
             }
 
@@ -83,7 +84,7 @@ public class Game {
             board.places[currentPlayer] = board.places[currentPlayer] + roll;
             if (board.places[currentPlayer] > 11) board.places[currentPlayer] = board.places[currentPlayer] - 12;
 
-            printer.print(players.get(currentPlayer)
+            printer.print(playersName.get(currentPlayer)
                     + "'s new location is "
                     + board.places[currentPlayer]);
             printer.print("The category is " + currentCategory());
@@ -126,23 +127,23 @@ public class Game {
     }
 
     public boolean wasCorrectlyAnswered() {
-        if (board.isInPenaltyBox(currentPlayer)) {
+        if (players.isInPenaltyBox(currentPlayer)) {
             if (isGettingOutOfPenaltyBox) {
                 printer.print("Answer was correct!!!!");
-                board.incrementPlayerCoins(currentPlayer);
-                printer.print(players.get(currentPlayer)
+                players.incrementPlayerCoins(currentPlayer);
+                printer.print(playersName.get(currentPlayer)
                         + " now has "
-                        + board.getCoins(currentPlayer)
+                        + players.getCoins(currentPlayer)
                         + " Gold Coins.");
 
                 boolean winner = didPlayerWin();
                 currentPlayer++;
-                if (currentPlayer == players.size()) currentPlayer = 0;
+                if (currentPlayer == playersName.size()) currentPlayer = 0;
 
                 return winner;
             } else {
                 currentPlayer++;
-                if (currentPlayer == players.size()) currentPlayer = 0;
+                if (currentPlayer == playersName.size()) currentPlayer = 0;
                 return true;
             }
 
@@ -150,15 +151,15 @@ public class Game {
         } else {
 
             printer.print("Answer was correct!!!!");
-            board.incrementPlayerCoins(currentPlayer);
-            printer.print(players.get(currentPlayer)
+            players.incrementPlayerCoins(currentPlayer);
+            printer.print(playersName.get(currentPlayer)
                     + " now has "
-                    + board.getCoins(currentPlayer)
+                    + players.getCoins(currentPlayer)
                     + " Gold Coins.");
 
             boolean winner = didPlayerWin();
             currentPlayer++;
-            if (currentPlayer == players.size()) currentPlayer = 0;
+            if (currentPlayer == playersName.size()) currentPlayer = 0;
 
             return winner;
         }
@@ -166,16 +167,16 @@ public class Game {
 
     public boolean wrongAnswer() {
         printer.print("Question was incorrectly answered");
-        printer.print(players.get(currentPlayer) + " was sent to the penalty box");
-        board.putCurrentPlayerInPenaltyBox(currentPlayer);
+        printer.print(playersName.get(currentPlayer) + " was sent to the penalty box");
+        players.putCurrentPlayerInPenaltyBox(currentPlayer);
 
         currentPlayer++;
-        if (currentPlayer == players.size()) currentPlayer = 0;
+        if (currentPlayer == playersName.size()) currentPlayer = 0;
         return true;
     }
 
 
     private boolean didPlayerWin() {
-        return !(board.getCoins(currentPlayer) == 6);
+        return !(players.getCoins(currentPlayer) == 6);
     }
 }
