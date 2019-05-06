@@ -3,6 +3,7 @@ package com.adaptionsoft.games.trivia;
 import com.adaptionsoft.games.trivia.runner.AutomatePlayer;
 import com.adaptionsoft.games.trivia.runner.GameRunner;
 import com.adaptionsoft.games.trivia.runner.IAutomatePlayer;
+import com.adaptionsoft.games.trivia.uglytrivia.Game;
 import com.adaptionsoft.games.trivia.uglytrivia.IPrinter;
 import org.assertj.core.api.Assertions;
 import org.junit.Ignore;
@@ -62,6 +63,35 @@ public class SomeTest {
 
         List<String> outputStrings = Arrays.asList(output.split("\r\n"));
         Assertions.assertThat(outputStrings).containsExactlyElementsOf(expectedString);
+    }
+
+    @Test
+    public void third_sample_golden_master() throws IOException, URISyntaxException {
+        List<String> expectedString = Files.readAllLines(Paths.get("src/test/resources/goldenMasterWithPlayerNotGettingOutOfPenaltyBox.txt"));
+
+        Integer[] rolls = {5, 1, 1, 4, 2, 2, 1, 4, 1, 2, 4, 1, 4, 4, 1, 2, 4, 1};
+        Boolean[] answers = {true, false, false, false, false, false, false, false, true, true, false, false, false, false, false, false, false};
+        FakePlayer fakePlayer = new FakePlayer(rolls, answers);
+
+        FakePrinter fakePrinter = new FakePrinter();
+        GameRunner.playGame(fakePlayer, fakePrinter);
+
+        Assertions.assertThat(fakePrinter.output).containsExactlyElementsOf(expectedString);
+    }
+
+    @Test
+    public void player_should_not_have_question_when_he_is_in_penalty_box() throws IOException {
+
+        FakePrinter fakePrinter = new FakePrinter();
+        Game game = new Game(fakePrinter);
+        game.add("Che");
+
+        game.roll(1);
+        game.wrongAnswer();
+        game.roll(2);
+        game.wrongAnswer();
+        String outputResult = fakePrinter.output.get(fakePrinter.output.size() - 1);
+        Assertions.assertThat(outputResult).isEqualTo("Che is not getting out of the penalty box");
     }
 
     public class PlayerWrapper implements IAutomatePlayer {

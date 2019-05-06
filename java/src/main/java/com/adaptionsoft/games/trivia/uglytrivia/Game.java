@@ -6,6 +6,7 @@ public class Game {
     public static final String SPORTS = "Sports";
     public static final String ROCK = "Rock";
     public static final int CATEGORY_NUMBER = 4;
+    public static final int I_THINK_ITS_MAX_NUMBER_OF_CASES = 12;
     final Players players = new Players();
     private static final int NUMBER_MAX_QUESTION = 50;
     private final Board board = new Board();
@@ -23,6 +24,7 @@ public class Game {
         }
 
     }
+
     public Game() {
         this(new ConsolePrinter());
     }
@@ -39,6 +41,7 @@ public class Game {
         Player player = new Player(playerName);
         players.addPlayer(player);
 
+        //initialiser l'emplacement du joueur en 0 au moment d'ajout
         board.places[howManyPlayers()] = 0;
 
         printer.print(playerName + " was added");
@@ -54,20 +57,12 @@ public class Game {
         printer.print(players.getPlayerName(currentPlayer) + " is the current player");
         printer.print("They have rolled a " + roll);
 
-
         if (players.isInPenaltyBox(currentPlayer)) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
-
+                players.getPlayerOutOfPenaltyBox(currentPlayer, roll);
                 printer.print(players.getPlayerName(currentPlayer) + " is getting out of the penalty box");
-                board.places[currentPlayer] = board.places[currentPlayer] + roll;
-                if (board.places[currentPlayer] > 11) board.places[currentPlayer] = board.places[currentPlayer] - 12;
-
-                printer.print(players.getPlayerName(currentPlayer)
-                        + "'s new location is "
-                        + board.places[currentPlayer]);
-                printer.print("The category is " + currentCategory());
-                askQuestion();
+                movePlayer(roll);
             } else {
                 printer.print(players.getPlayerName(currentPlayer) + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
@@ -75,16 +70,21 @@ public class Game {
 
         } else {
 
-            board.places[currentPlayer] = board.places[currentPlayer] + roll;
-            if (board.places[currentPlayer] > 11) board.places[currentPlayer] = board.places[currentPlayer] - 12;
+            movePlayer(roll);
+        }
+    }
 
-            printer.print(players.getPlayerName(currentPlayer)
-                    + "'s new location is "
-                    + board.places[currentPlayer]);
-            printer.print("The category is " + currentCategory());
-            askQuestion();
+    private void movePlayer(int roll) {
+        board.places[currentPlayer] = board.places[currentPlayer] + roll;
+        if (board.places[currentPlayer] > 11) {
+            board.places[currentPlayer] = board.places[currentPlayer] - I_THINK_ITS_MAX_NUMBER_OF_CASES;
         }
 
+        printer.print(players.getPlayerName(currentPlayer)
+                + "'s new location is "
+                + board.places[currentPlayer]);
+        printer.print("The category is " + currentCategory());
+        askQuestion();
     }
 
     private void askQuestion() {
@@ -121,52 +121,47 @@ public class Game {
     }
 
     public boolean wasCorrectlyAnswered() {
-        if (players.isInPenaltyBox(currentPlayer)) {
-            if (isGettingOutOfPenaltyBox) {
-                printer.print("Answer was correct!!!!");
-                players.incrementPlayerCoins(currentPlayer);
-                printer.print(players.getPlayerName(currentPlayer)
-                        + " now has "
-                        + players.getCoins(currentPlayer)
-                        + " Gold Coins.");
-
-                boolean winner = didPlayerWin();
-                currentPlayer++;
-                if (currentPlayer == howManyPlayers()) currentPlayer = 0;
-
-                return winner;
-            } else {
-                currentPlayer++;
-                if (currentPlayer == howManyPlayers()) currentPlayer = 0;
-                return true;
-            }
-
-
-        } else {
-
-            printer.print("Answer was correct!!!!");
-            players.incrementPlayerCoins(currentPlayer);
-            printer.print(players.getPlayerName(currentPlayer)
-                    + " now has "
-                    + players.getCoins(currentPlayer)
-                    + " Gold Coins.");
-
-            boolean winner = didPlayerWin();
+        if (players.isInPenaltyBox(currentPlayer) && !isGettingOutOfPenaltyBox) {
             currentPlayer++;
-            if (currentPlayer == howManyPlayers()) currentPlayer = 0;
-
-            return winner;
+            if (currentPlayer == howManyPlayers()) {
+                currentPlayer = 0;
+            }
+            return true;
         }
+        return answerWasCorrect();
+    }
+
+    private boolean answerWasCorrect() {
+        printer.print("Answer was correct!!!!");
+        players.incrementPlayerCoins(currentPlayer);
+        printer.print(players.getPlayerName(currentPlayer)
+                + " now has "
+                + players.getCoins(currentPlayer)
+                + " Gold Coins.");
+
+        boolean winner = didPlayerWin();
+        currentPlayer++;
+        if (currentPlayer == howManyPlayers()) {
+            currentPlayer = 0;
+        }
+
+        return winner;
     }
 
     public boolean wrongAnswer() {
-        printer.print("Question was incorrectly answered");
-        printer.print(players.getPlayerName(currentPlayer) + " was sent to the penalty box");
-        players.putCurrentPlayerInPenaltyBox(currentPlayer);
+        if (!players.isInPenaltyBox(currentPlayer)) {
+            playerGoToPenaltybox();
+        }
 
         currentPlayer++;
         if (currentPlayer == howManyPlayers()) currentPlayer = 0;
         return true;
+    }
+
+    private void playerGoToPenaltybox() {
+        printer.print("Question was incorrectly answered");
+        printer.print(players.getPlayerName(currentPlayer) + " was sent to the penalty box");
+        players.putCurrentPlayerInPenaltyBox(currentPlayer);
     }
 
 

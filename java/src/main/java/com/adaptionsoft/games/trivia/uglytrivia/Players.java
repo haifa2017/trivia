@@ -42,4 +42,8 @@ public class Players {
     boolean isPlayersNumberValid() {
         return count() >= MIN_PLAYER_NUMBER;
     }
+
+    public void getPlayerOutOfPenaltyBox(int playerIndex, int roll) {
+        players.get(playerIndex).tryGettingOutOfPrison(roll);
+    }
 }
